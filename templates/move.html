@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Movement</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+<h2>Movement Details</h2>
+<br>
+<form action="/move" method="POST"  onsubmit="return validateFields()">
+    <!-- <input type="text" name="pid" id="prod_id" placeholder="Product Id" required><br> -->
+    
+    <select name="pid" id="pid" class="form-select" id="floatingSelect" aria-label="Floating label select example" style="border:none">
+        <option selected>Product Id</option>
+        {%for i in all_prod %}
+            <option value="{{i.id}}">{{i.id}}</option>
+        {%endfor%}
+    </select>
+
+    <input type="datetime-local" name="timestamp" id="time" placeholder="Date and Time" required>
+    <input type="number" name="quantity" id="quantity" placeholder="Quantity" required>
+    <!-- <input type="text" name="fromloc" id="from" placeholder="From" ><br>
+    <input type="text" name="toloc" id="to" placeholder="To" ><br> -->
+    <select name="fromloc" id="fromloc" class="form-select" id="floatingSelect" aria-label="Floating label select example" style="border:none">
+        <option selected>From</option>
+        {%for i in all_loc %}
+            <option value="{{i.id}}">{{i.id}}</option>
+        {%endfor%}
+    </select>
+    <select name="toloc" id="toloc" class="form-select" id="floatingSelect" aria-label="Floating label select example" style="border:none">
+        <option selected>TO</option>
+        {%for i in all_loc %}
+            <option value="{{i.id}}">{{i.id}}</option>
+        {%endfor%}
+    </select><br>
+
+    <button type="submit" class="btn btn-secondary btn-lg">Submit</button>
+    
+</div>
+</form>
+<script>
+    function validateFields() {
+        const field1 = document.getElementById('from').value.trim();
+        const field2 = document.getElementById('to').value.trim();
+    
+        if (!field1 && !field2) {
+            alert("Please fill out at least one of the two fields.");
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+    </script>
+{% endblock %}

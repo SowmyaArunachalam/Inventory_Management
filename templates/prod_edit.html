@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Product Details</title>
+
+{% endblock %}
+
+{% block body %} 
+<div class="container">
+<h2>Edit Product</h2><br>
+<form action="/List/edit/{{ prod.id }}" method="POST">
+    <input type="text" name="name" id="name" placeholder="Product Name" value="{{ prod.name }}" required>
+    <input type="text" name="category" id="category" placeholder="Category" value="{{ prod.category }}" required>
+    <input type="number" name="quantity" id="quantity" placeholder="Quantity" value="{{ prod.quantity }}" required>
+    <input type="number" name="cost_price" id="cost_price" placeholder="Cost Price" value="{{ prod.cost_price }}" required>
+    <input type="number" name="selling_price" id="selling_price" placeholder="Selling Price" value="{{ prod.selling_price }}" required><br>
+    <button type="submit" class="btn btn-secondary btn-lg">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

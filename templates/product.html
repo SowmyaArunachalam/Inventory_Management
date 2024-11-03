@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+<title>Product Details</title>
+{% endblock %}
+
+{% block body %} 
+<div class="container">
+<h2>Product Details</h2><br>
+<form action="/product" method="POST">
+    <input type="text" name="name" id="name" placeholder="Product Name" required>
+    <input type="text" name="category" id="category" placeholder="Category" required>
+    <input type="number" name="quantity" id="quantity" placeholder="Quantity" required>
+    <input type="number" name="cost_price" id="cost_price" placeholder="Cost Price" required>
+    <input type="number" name="selling_price" id="selling_price" placeholder="Selling Price" required><br>
+    <button type="submit" class="btn btn-secondary btn-lg" role="button">Submit</button>
+    
+    
+</form>
+</div>
+
+{% endblock %}

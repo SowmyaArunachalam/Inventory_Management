@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+    <title>Edit location Details</title>
+
+{% endblock %}
+
+{% block body %} 
+<div class="container">
+<h2>Edit Product</h2><br>
+<form action="/loclist/edit/{{ loc.id }}" method="POST">
+    <input type="text" name="name" id="name" placeholder="Name" value="{{ loc.name }}" required>
+    <input type="text" name="address" id="address" placeholder="Address" value="{{ loc.address }}" required>
+    <input type="text" name="incharge" id="incharge" placeholder="Incharge Name" value="{{ loc.incharge }}" required>
+    <input type="tel" name="phone" id="phone" placeholder="Phone Number" value="{{ loc.phone }}" required><br>
+    <button type="submit" class="btn btn-secondary btn-lg">Submit</button>
+    </form>
+</div>
+
+{% endblock %}
