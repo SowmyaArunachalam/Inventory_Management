@@ -1,10 +1,11 @@
 from operator import and_
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '12345'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///product.db'
 db = SQLAlchemy(app)
 
@@ -147,10 +148,16 @@ def move():
         fromloc = request.form['fromloc']
         toloc = request.form['toloc']
         
+        if(fromloc=="From"):
+            fromloc="-"
+        if(toloc=="TO"):
+            toloc="-"
+        
         # Create new Move instance
         add_move = Move(pid=pid, timestamp=timestamp, quantity=quantity, fromloc=fromloc, toloc=toloc)
         db.session.add(add_move)
         db.session.commit()
+        print(pid,fromloc,toloc,quantity)
         change(pid,fromloc,toloc,quantity)
         return redirect('/move')
     else:
@@ -179,14 +186,40 @@ class ProductLocation(db.Model):
     available_quantity = db.Column(db.Integer, nullable=False)
     
     def __repr__(self):
-        return  str(self.available_quantity)
+        return  str(self.id)
 
 def change(pid, fromloc, toloc, quantity):
+        
+    if (fromloc and fromloc!="-"):
+        product_locations = ProductLocation.query.filter(and_(ProductLocation.location_id==fromloc,ProductLocation.product_id==pid)).first()
+        
+        if(product_locations):
+            id1=ProductLocation.query.get_or_404(product_locations.id)
+            
+            if(id1.available_quantity > quantity):
+                id1.available_quantity-=quantity
+                print(id1.available_quantity)
+                db.session.commit()
+            else:
+                flash(f"Location {fromloc} has Insufficient Quantity")
+        else:
+                flash(f"Location {fromloc} has Insufficient Quantity")
+            
+    if (toloc and toloc!="-"):
+        plocations = ProductLocation.query.filter(and_(ProductLocation.location_id==toloc,ProductLocation.product_id==pid)).first()
     
-    product_locations = ProductLocation.query.filter(and_(ProductLocation.location_id==1,ProductLocation.product_id==1)).all()
- 
-    
-    
+        if(not plocations):
+            add_prodloc = ProductLocation(location_id=toloc, product_id=pid, available_quantity=quantity)
+            db.session.add(add_prodloc)
+            db.session.commit()
+            print(add_prodloc)
+        else:
+            id2=ProductLocation.query.get_or_404(plocations.id)
+            print(id2.available_quantity, quantity)
+            id2.available_quantity+=quantity
+            print(id2.available_quantity)
+            db.session.commit()
+        
 
 @app.route('/quantity')
 def quantity():

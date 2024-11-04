@@ -22,6 +22,8 @@
     <input type="number" name="quantity" id="quantity" placeholder="Quantity" required>
     <!-- <input type="text" name="fromloc" id="from" placeholder="From" ><br>
     <input type="text" name="toloc" id="to" placeholder="To" ><br> -->
+
+
     <select name="fromloc" id="fromloc" class="form-select" id="floatingSelect" aria-label="Floating label select example" style="border:none">
         <option selected>From</option>
         {%for i in all_loc %}
@@ -35,6 +37,10 @@
         {%endfor%}
     </select><br>
 
+    {% for m in get_flashed_messages() %}
+        {{m}}
+    {%endfor%}
+
     <button type="submit" class="btn btn-secondary btn-lg">Submit</button>
     
 </div>
@@ -44,11 +50,13 @@
         const field1 = document.getElementById('from').value.trim();
         const field2 = document.getElementById('to').value.trim();
     
+         
         if (!field1 && !field2) {
             alert("Please fill out at least one of the two fields.");
             return false; // Prevent form submission
         }
-        return true; // Allow form submission
-    }
+        return true; 
+        
+} 
     </script>
 {% endblock %}
